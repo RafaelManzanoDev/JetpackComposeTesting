@@ -10,25 +10,34 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TriStateCheckbox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -41,12 +50,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.rafaelmanzano.jetpackcomposecomponents.ui.CheckInfo
 import com.rafaelmanzano.jetpackcomposecomponents.ui.theme.JetpackComposeComponentsTheme
 
 class MainActivity : ComponentActivity() {
@@ -58,8 +69,27 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+//                    val myOptions = getOptions(
+//                        titles = listOf(
+//                            "Rafa",
+//                            "Manzano",
+//                            "Lucas",
+//                            "Maricarmen",
+//                            "Osuna"
+//                        )
+//                    )
+//
+//                    Column {
+//                        myOptions.forEach {
+//                            MyCheckBoxWithTextComponent(checkInfo = it)
+//                        }
+//                    }
+
+                    var selected by rememberSaveable { mutableStateOf("Rafa") }
                     Column {
-                        MyRealTestProgressBar()
+                        MyRadioButtonList(selected) {
+                            selected = it
+                        }
                     }
                 }
             }
@@ -70,7 +100,9 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    MyRealTestProgressBar()
+    Column {
+        
+    }
 }
 
 @Composable
@@ -306,7 +338,9 @@ fun MyRealTestProgressBar() {
         LinearProgressIndicator(progress = { progress })
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(8  .dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             horizontalArrangement = Arrangement.Center,
         ) {
             Button(onClick = { progress += 0.1f }) {
@@ -316,6 +350,152 @@ fun MyRealTestProgressBar() {
             Button(onClick = { progress -= 0.1f }) {
                 Text(text = "Decrementar")
             }
+        }
+    }
+}
+
+@Composable
+fun MySwitch() {
+    var state by rememberSaveable { mutableStateOf(false) }
+    Switch(
+        checked = state,
+        onCheckedChange = { state = !state },
+        enabled = true,
+        colors = SwitchDefaults.colors(
+            uncheckedThumbColor = Color.Red,
+            uncheckedTrackColor = Color.Magenta,
+            checkedThumbColor = Color.Green,
+            checkedTrackColor = Color.Cyan,
+            disabledCheckedThumbColor = Color.Yellow,
+            disabledCheckedTrackColor = Color.Yellow,
+            disabledUncheckedThumbColor = Color.Yellow,
+            disabledUncheckedTrackColor = Color.Yellow
+        )
+    )
+}
+
+@Composable
+fun MyCheckBox() {
+    var state by rememberSaveable { mutableStateOf(false) }
+
+    Checkbox(
+        checked = state,
+        onCheckedChange = { state = !state },
+        enabled = true,
+        colors = CheckboxDefaults.colors(
+            checkedColor = Color.Red,
+            uncheckedColor = Color.Yellow,
+            checkmarkColor = Color.Blue
+        )
+    )
+}
+
+@Composable
+fun MyCheckBoxWithText() {
+    var state by rememberSaveable { mutableStateOf(false) }
+
+    Row(
+        modifier = Modifier.padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(checked = state, onCheckedChange = { state = !state })
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = "Ejemplo 1")
+    }
+}
+
+@Composable
+fun MyCheckBoxWithTextComponent(checkInfo: CheckInfo) {
+    Row(
+        modifier = Modifier.padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Checkbox(
+            checked = checkInfo.selected,
+            onCheckedChange = { checkInfo.onCheckChange(!checkInfo.selected) })
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = checkInfo.title)
+    }
+}
+
+@Composable
+fun getOptions(titles: List<String>): List<CheckInfo> {
+    return titles.map { title ->
+        var state by rememberSaveable { mutableStateOf(false) }
+        CheckInfo(
+            title = title,
+            selected = state,
+            onCheckChange = { state = it }
+        )
+    }
+}
+
+@Composable
+fun MyTriStatusCheckBox() {
+    var status by rememberSaveable { mutableStateOf(ToggleableState.Off) }
+    TriStateCheckbox(state = status, onClick = {
+        status = when (status) {
+            ToggleableState.On -> ToggleableState.Off
+            ToggleableState.Off -> ToggleableState.Indeterminate
+            ToggleableState.Indeterminate -> ToggleableState.On
+        }
+    })
+}
+
+@Composable
+fun MyRadioButton() {
+    var status by rememberSaveable { mutableStateOf(false) }
+
+    Row(modifier = Modifier.fillMaxSize()) {
+        RadioButton(
+            selected = status,
+            onClick = { status = !status },
+            colors = RadioButtonDefaults.colors(
+                selectedColor = Color.Red,
+                unselectedColor = Color.Yellow,
+                disabledSelectedColor = Color.Green,
+                disabledUnselectedColor = Color.Green
+            ),
+            enabled = true
+        )
+        Text(text = "Ejemplo 1")
+    }
+}
+
+@Composable
+fun MyRadioButtonList(name: String, onItemSelected: (String) -> Unit) {
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row {
+            RadioButton(
+                selected = name == "Rafa",
+                onClick = { onItemSelected("Rafa")}
+            )
+            Text(text = "Rafa")
+        }
+
+        Row {
+            RadioButton(
+                selected = name == "Aris",
+                onClick = { onItemSelected("Aris")}
+            )
+            Text(text = "Aris")
+        }
+
+        Row {
+            RadioButton(
+                selected = name == "David",
+                onClick = { onItemSelected("David")}
+            )
+            Text(text = "David")
+        }
+
+        Row {
+            RadioButton(
+                selected = name == "Fulanito",
+                onClick = { onItemSelected("Fulanito")}
+            )
+            Text(text = "Fulanito")
         }
     }
 }
