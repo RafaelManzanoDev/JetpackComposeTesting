@@ -7,15 +7,20 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -26,10 +31,12 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -52,7 +59,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
-                        MyIcon()
+                        MyRealTestProgressBar()
                     }
                 }
             }
@@ -63,7 +70,7 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    MyIcon()
+    MyRealTestProgressBar()
 }
 
 @Composable
@@ -240,6 +247,77 @@ fun MyIcon() {
         contentDescription = "Icono",
         tint = Color.Yellow
     )
+}
+
+@Composable
+fun MyProgress() {
+    Column(
+        modifier = Modifier
+            .padding(24.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator(color = Color.Red, strokeWidth = 5.dp)
+        LinearProgressIndicator(
+            modifier = Modifier.padding(top = 16.dp),
+            color = Color.Red,
+            trackColor = Color.Green
+        )
+    }
+}
+
+@Composable
+fun MyProgressAdvanced() {
+    var showLoading by rememberSaveable { mutableStateOf(false) }
+    Column(
+        modifier = Modifier
+            .padding(24.dp)
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (showLoading) {
+            CircularProgressIndicator(color = Color.Red, strokeWidth = 5.dp)
+            LinearProgressIndicator(
+                modifier = Modifier.padding(top = 16.dp),
+                color = Color.Red,
+                trackColor = Color.Green
+            )
+        }
+
+        Button(
+            onClick = { showLoading = !showLoading },
+            modifier = Modifier.padding(10.dp)
+        ) {
+            Text(text = "Cargar Perfil")
+        }
+    }
+}
+
+@Composable
+fun MyRealTestProgressBar() {
+    var progress by rememberSaveable { mutableFloatStateOf(0f) }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LinearProgressIndicator(progress = { progress })
+
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(8  .dp),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Button(onClick = { progress += 0.1f }) {
+                Text(text = "Incrementar")
+            }
+
+            Button(onClick = { progress -= 0.1f }) {
+                Text(text = "Decrementar")
+            }
+        }
+    }
 }
 
 
