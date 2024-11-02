@@ -1,5 +1,5 @@
 # JetpackComposeTesting
-Se va a añadir proyectos con las secciones del curso de Aristidevs de Jetpack Compose en Udemy
+Son las seccione del curso de Aristidevs de Jetpack Compose en Udemy. Cada commit es una seccion dentro del repo
 Secciones del curso: 
 1. Introducción a Compose
 2. Layouts en Jetpack Compose
