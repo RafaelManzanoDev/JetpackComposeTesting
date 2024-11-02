@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,12 +18,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -84,12 +93,8 @@ class MainActivity : ComponentActivity() {
 //                            MyCheckBoxWithTextComponent(checkInfo = it)
 //                        }
 //                    }
-
-                    var selected by rememberSaveable { mutableStateOf("Rafa") }
                     Column {
-                        MyRadioButtonList(selected) {
-                            selected = it
-                        }
+                        MyDropDownMenu()
                     }
                 }
             }
@@ -101,7 +106,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     Column {
-        
+        MyDropDownMenu()
     }
 }
 
@@ -469,7 +474,7 @@ fun MyRadioButtonList(name: String, onItemSelected: (String) -> Unit) {
         Row {
             RadioButton(
                 selected = name == "Rafa",
-                onClick = { onItemSelected("Rafa")}
+                onClick = { onItemSelected("Rafa") }
             )
             Text(text = "Rafa")
         }
@@ -477,7 +482,7 @@ fun MyRadioButtonList(name: String, onItemSelected: (String) -> Unit) {
         Row {
             RadioButton(
                 selected = name == "Aris",
-                onClick = { onItemSelected("Aris")}
+                onClick = { onItemSelected("Aris") }
             )
             Text(text = "Aris")
         }
@@ -485,7 +490,7 @@ fun MyRadioButtonList(name: String, onItemSelected: (String) -> Unit) {
         Row {
             RadioButton(
                 selected = name == "David",
-                onClick = { onItemSelected("David")}
+                onClick = { onItemSelected("David") }
             )
             Text(text = "David")
         }
@@ -493,14 +498,90 @@ fun MyRadioButtonList(name: String, onItemSelected: (String) -> Unit) {
         Row {
             RadioButton(
                 selected = name == "Fulanito",
-                onClick = { onItemSelected("Fulanito")}
+                onClick = { onItemSelected("Fulanito") }
             )
             Text(text = "Fulanito")
         }
     }
 }
 
+@Composable
+fun MyCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(12.dp),
+        shape = MaterialTheme.shapes.small,
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Red,
+            contentColor = Color.Green
+        ),
+        border = BorderStroke(5.dp, Color.Green)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = "Ejemplo 1")
+            Text(text = "Ejemplo 2")
+            Text(text = "Ejemplo 3")
+        }
+    }
+}
 
+@Composable
+fun MyBadgeBox() {
+    BadgedBox(
+        badge = {
+            Badge(
+                contentColor = Color.White,
+                containerColor = Color.Blue
+            ) { Text(text = "1") }
+        },
+        modifier = Modifier.padding(16.dp)
+    ) {
+        Icon(imageVector = Icons.Default.Star, contentDescription = "")
+    }
+}
 
+@Composable
+fun MyDivider() {
+    HorizontalDivider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp), color = Color.Red
+    )
+}
 
+@Composable
+fun MyDropDownMenu() {
+    var selectedText by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
+    val desserts = listOf("Helado", "Tarta", "Fruta", "Natillas", "Café", "Chilaquile")
 
+    Column(modifier = Modifier.padding(20.dp)) {
+        OutlinedTextField(
+            value = selectedText,
+            onValueChange = { selectedText = it },
+            enabled = false,
+            readOnly = true,
+            modifier = Modifier
+                .clickable { expanded = true }
+                .fillMaxWidth()
+        )
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            desserts.forEach { dessert ->
+                DropdownMenuItem(
+                    text = { Text(text = dessert) },
+                    onClick = {
+                        expanded = false
+                        selectedText = dessert
+                    }
+                )
+            }
+        }
+    }
+}
