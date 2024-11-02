@@ -1,21 +1,28 @@
 package com.rafaelmanzano.jetpackcomposecomponents
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,8 +44,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
-                        var myText by remember { mutableStateOf("Rafa") }
-                        MyTextField(myText) { myText = it}
+                        MyTextButtonStateExample()
                     }
                 }
             }
@@ -49,7 +55,7 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    MyTextFieldOutlined()
+    MyTextButtonStateExample()
 }
 
 @Composable
@@ -115,6 +121,84 @@ fun MyTextFieldOutlined() {
             unfocusedTextColor = Color.Red
         )
     )
+}
+
+@Composable
+fun MyButtonExample() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp)
+    ) {
+        Button(
+            onClick = { Log.i("Rafa", "Esto es un ejemplo") },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Magenta,
+                contentColor = Color.Blue
+            ),
+            border = BorderStroke(5.dp, Color.Green),
+            enabled = false
+        ) {
+            Text(text = "Pulsame")
+        }
+    }
+}
+
+@Composable
+fun MyButtonStateExample() {
+    var enabled by rememberSaveable { mutableStateOf(true) }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp)
+    ) {
+        Button(
+            onClick = { enabled = false },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Magenta,
+                contentColor = Color.Blue
+            ),
+            border = BorderStroke(5.dp, Color.Green),
+            enabled = enabled
+        ) {
+            Text(text = "Pulsame")
+        }
+    }
+}
+
+@Composable
+fun MyOutlinedButtonStateExample() {
+    var enabled by rememberSaveable { mutableStateOf(true) }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp)
+    ) {
+        OutlinedButton(
+            onClick = { enabled = false },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Magenta,
+                contentColor = Color.Blue,
+                disabledContainerColor = Color.Blue,
+                disabledContentColor = Color.Red
+            ),
+        ) {
+            Text(text = "Hola")
+        }
+    }
+}
+
+@Composable
+fun MyTextButtonStateExample() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp)
+    ) {
+        TextButton(onClick = {  }) {
+            Text(text = "Hola")
+        }
+    }
 }
 
 
