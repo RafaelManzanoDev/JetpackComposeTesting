@@ -37,7 +37,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Column {
-                        MyTextFieldOutlined()
+                        var myText by remember { mutableStateOf("Rafa") }
+                        MyTextField(myText) { myText = it}
                     }
                 }
             }
@@ -78,9 +79,8 @@ fun MyText() {
 }
 
 @Composable
-fun MyTextField() {
-    var myText by remember { mutableStateOf("Rafa") }
-    TextField(value = myText, onValueChange = { myText = it })
+fun MyTextField(name: String, onValueChanged: (String) -> Unit) {
+    TextField(value = name, onValueChange = { onValueChanged(it) })
 }
 
 @Composable
