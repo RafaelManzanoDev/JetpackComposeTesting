@@ -7,3 +7,11 @@ Secciones del curso:
 4. Componentes Text y TextField
 5. State hoisting
 6. Componente Button
+7. Componente Image
+8. Componente ProgressBar
+9. Componente de control de selección
+10. Otros componentes
+11. Componentes Slider
+12. Diálogos en Jetpack Compose
+13. Login básico: Instagram
+14. RETO 1 - De tiuts va la cosa
