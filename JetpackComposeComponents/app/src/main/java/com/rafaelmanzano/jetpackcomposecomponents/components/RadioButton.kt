@@ -71,3 +71,57 @@ fun MyRadioButtonList(name: String, onItemSelected: (String) -> Unit) {
         }
     }
 }
+
+@Composable
+fun MyRadioButtonConfirmDialogList(name: String, onItemSelected: (String) -> Unit) {
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row {
+            RadioButton(
+                selected = name == "None",
+                onClick = { onItemSelected("None") }
+            )
+            Text(text = "None")
+        }
+
+        Row {
+            RadioButton(
+                selected = name == "Callisto",
+                onClick = { onItemSelected("Callisto") }
+            )
+            Text(text = "Callisto")
+        }
+
+        Row {
+            RadioButton(
+                selected = name == "Ganymede",
+                onClick = { onItemSelected("Ganymede") }
+            )
+            Text(text = "Ganymede")
+        }
+
+        Row {
+            RadioButton(
+                selected = name == "Oberon",
+                onClick = { onItemSelected("Oberon") }
+            )
+            Text(text = "Oberon")
+        }
+
+        Row {
+            RadioButton(
+                selected = name == "Phobos",
+                onClick = { onItemSelected("Phobos") }
+            )
+            Text(text = "Phobos")
+        }
+
+        Row {
+            RadioButton(
+                selected = name == "Dione",
+                onClick = { onItemSelected("Dione") }
+            )
+            Text(text = "Dione")
+        }
+    }
+}
