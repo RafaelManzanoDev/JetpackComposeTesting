@@ -16,23 +16,12 @@ import es.rmanzanodev.jetpackcomposeinstagram.ui.theme.JetpackComposeInstagramTh
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             JetpackComposeInstagramTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                LoginScreen()
             }
         }
     }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    LoginScreen()
 }
 
 @Preview(showBackground = true)
